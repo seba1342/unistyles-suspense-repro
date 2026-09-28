@@ -36,7 +36,7 @@ React attaches native refs after rendering the children. By that point, the shar
 
 The repro has no navigation, list library, theme switching or data requests. `Gate` reads a promise with React's `use` API to suspend the content for one second.
 
-The fix rebuilds each view's styles from its own saved arguments and variants before copying the shared cache. Native changes require a rebuild. Reloading JavaScript alone does not apply the fix.
+The [proposed fix](https://github.com/jpudysz/react-native-unistyles/pull/1260) rebuilds each view's styles from its own saved arguments and variants before copying the shared cache. Native changes require a rebuild. Reloading JavaScript alone does not apply the fix.
 
 ## Checked locally
 
