@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "Reading List Repro",
+    "slug": "unistyles-suspense-repro",
+    "version": "1.0.0",
+    "ios": { "bundleIdentifier": "dev.seba1342.unistylesrepro" },
+    "android": { "package": "dev.seba1342.unistylesrepro" }
+  }
+}

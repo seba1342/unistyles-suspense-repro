@@ -1,0 +1,9 @@
+node_modules/
+.expo/
+ios/
+android/
+dist/
+*.log
+.DS_Store
+.bundle/
+vendor/

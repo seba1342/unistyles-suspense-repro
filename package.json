@@ -1,0 +1,27 @@
+{
+  "name": "unistyles-suspense-repro",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "start": "expo start",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-native/normalize-colors": "0.86.2",
+    "expo": "57.0.25",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "react-native-nitro-modules": "0.36.1",
+    "react-native-unistyles": "3.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.29.0",
+    "@types/react": "19.2.14",
+    "babel-preset-expo": "57.0.9",
+    "typescript": "6.0.3"
+  }
+}
