@@ -40,11 +40,30 @@ The [proposed fix](https://github.com/jpudysz/react-native-unistyles/pull/1260) 
 
 ## Checked locally
 
-On an iPhone 17 simulator with a Release build, the unpatched app fails on the first restore. With the native fix, all three labels stay left of their values on the same line through 20 restores. The revised fix also builds for Android arm64. Android runtime checks still need a device or emulator.
+On an iPhone 17 simulator with a Release build, the unpatched row case fails on the first restore. With the native fix, all three labels stay left of their values on the same line through 20 restores. The revised fix also builds for Android arm64. Android runtime checks still need a device or emulator.
 
 ## Theme cache regression
 
-This checks a separate regression in the [first proposed patch](https://github.com/jpudysz/react-native-unistyles/commit/d5f8a85143cf9e38571083cf3f1db6855f7b0637). That patch clears the flag needed to discard a cached JavaScript style after a theme change.
+The default install uses unpatched Unistyles 3.3.0. **Fresh width: 180 is expected with that install.** The theme test checks a regression introduced by the [first proposed patch](https://github.com/jpudysz/react-native-unistyles/commit/d5f8a85143cf9e38571083cf3f1db6855f7b0637), which clears the flag needed to discard a cached JavaScript style after a theme change.
+
+| Native code in the build | Row restore | Theme test: fresh width |
+| --- | --- | --- |
+| Unpatched 3.3.0, the default install | Broken | 180, expected |
+| First patch, `d5f8a85` | Fixed | 80, stale |
+| Revised patch, `a8d5146` | Fixed | 180, expected |
+
+To reproduce the theme failure, install dependencies first, then run these commands from the repo root. This replaces one native source file with the first patch and rebuilds the iOS app:
+
+```sh
+curl --fail --location \
+  https://raw.githubusercontent.com/jpudysz/react-native-unistyles/d5f8a85143cf9e38571083cf3f1db6855f7b0637/packages/unistyles/cxx/hybridObjects/HybridShadowRegistry.cpp \
+  --output node_modules/react-native-unistyles/cxx/hybridObjects/HybridShadowRegistry.cpp
+pnpm ios --no-install --configuration Release
+```
+
+For the fixed result, use `a8d5146482ba4735168439865c2c4e5f53e3604d` in the URL instead and rebuild again. A JavaScript reload does not change the compiled native code. Reinstalling dependencies can remove this local source change.
+
+After the native build completes:
 
 1. Relaunch the app to start with the light theme.
 2. Open **Theme regression**.
@@ -58,5 +77,3 @@ The test keeps the same element and style prop across suspension. It reads the s
 Expected with the revised patch: **Fresh width: 180**, with both markers 180 points wide.
 
 With the first patch, the restored marker measures 180 points, but **Fresh width: 80** appears and the new marker measures 80 points. Both the JavaScript value and native marker widths pass with the revised patch on the iOS Release build.
-
-To compare patch revisions, copy that revision's `packages/unistyles/cxx/hybridObjects/HybridShadowRegistry.cpp` into `node_modules/react-native-unistyles/cxx/hybridObjects/HybridShadowRegistry.cpp`, then rebuild the native app. The installed package stays at 3.3.0, so a dependency reinstall removes this local source change.
