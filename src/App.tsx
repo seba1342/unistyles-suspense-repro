@@ -1,7 +1,6 @@
 import { Suspense, use, useState } from 'react';
 import { Button, Text, View, type ViewProps } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
-import { ThemeRegression } from './ThemeRegression';
 
 const ready = Promise.resolve();
 const entries = [['Books', '3'], ['Pages read', '42'], ['Next chapter', 'The Garden']];
@@ -21,19 +20,15 @@ export default function App() {
   const [promise, setPromise] = useState(ready);
   const [restores, setRestores] = useState(0);
   const [version, setVersion] = useState(0);
-  const [showTheme, setShowTheme] = useState(false);
 
   function suspend() {
     setPromise(new Promise<void>((resolve) => setTimeout(resolve, 1000)));
     setRestores((value) => value + 1);
   }
 
-  if (showTheme) return <ThemeRegression onBack={() => setShowTheme(false)} />;
-
   return (
     <View style={styles.screen}>
       <Text style={styles.heading}>Reading list</Text>
-      <Button title="Theme regression" onPress={() => setShowTheme(true)} />
       <Text style={styles.hint}>Labels belong on the left. Values belong on the right.</Text>
       <Button title="Hide and restore" onPress={suspend} />
       <Button title="Reset rows" onPress={() => setVersion((value) => value + 1)} />
